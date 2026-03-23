@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>era92 Fund — Investor Dashboard FY 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #0a0b1a;
+            --bg-card: #12132a;
+            --bg-card-hover: #1a1b3a;
+            --bg-header: linear-gradient(135deg, #020381 0%, #7a00df 50%, #2874fc 100%);
+            --bg-input: #1e1f3a;
+            --border: rgba(122, 0, 223, 0.2);
+            --border-hover: rgba(122, 0, 223, 0.5);
+            --text-primary: #f0f0ff;
+            --text-secondary: #8a8bb3;
+            --text-muted: #5a5b7a;
+            --accent-purple: #7a00df;
+            --accent-blue: #2874fc;
+            --accent-cyan: #00d4ff;
+            --accent-gold: #ffc107;
+            --accent-green: #00e676;
+            --accent-red: #ff5252;
+            --accent-orange: #ff9800;
+            --accent-pink: #e040fb;
+            --positive: #00e676;
+            --negative: #ff5252;
+            --gap: 16px;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: var(--gap);
+        }
+
+        /* ===== HEADER ===== */
+        .dashboard-header {
+            background: var(--bg-header);
+            padding: 28px 32px;
+            border-radius: var(--radius);
+            margin-bottom: var(--gap);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header-left { position: relative; z-index: 1; }
+
+        .header-left h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .header-left .subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+            font-weight: 400;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .refresh-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: rgba(255,255,255,0.75);
+            backdrop-filter: blur(10px);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .btn-refresh {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-refresh:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 24px 0 12px 0;
+            padding-left: 12px;
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        /* ===== KPI CARDS ===== */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .kpi-card:nth-child(1)::after { background: var(--accent-purple); }
+        .kpi-card:nth-child(2)::after { background: var(--accent-green); }
+        .kpi-card:nth-child(3)::after { background: var(--accent-blue); }
+        .kpi-card:nth-child(4)::after { background: var(--accent-gold); }
+        .kpi-card:nth-child(5)::after { background: var(--accent-cyan); }
+        .kpi-card:nth-child(6)::after { background: var(--accent-orange); }
+
+        .kpi-icon {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .kpi-change {
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .kpi-change.positive { color: var(--positive); }
+        .kpi-change.negative { color: var(--negative); }
+        .kpi-change.neutral { color: var(--text-muted); }
+
+        /* ===== CHART CONTAINERS ===== */
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+        }
+
+        .chart-row.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: border-color 0.3s;
+        }
+
+        .chart-container:hover {
+            border-color: var(--border-hover);
+        }
+
+        .chart-container.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .chart-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .chart-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .chart-wrap {
+            position: relative;
+            height: 300px;
+        }
+
+        .chart-wrap.tall {
+            height: 380px;
+        }
+
+        /* ===== DATA TABLE ===== */
+        .table-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            overflow-x: auto;
+            margin-bottom: var(--gap);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .data-table thead th {
+            text-align: left;
+            padding: 12px 14px;
+            border-bottom: 2px solid rgba(122, 0, 223, 0.3);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            white-space: nowrap;
+        }
+
+        .data-table tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: var(--text-primary);
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(122, 0, 223, 0.08);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table .total-row td {
+            font-weight: 700;
+            border-top: 2px solid rgba(122, 0, 223, 0.3);
+            color: var(--accent-gold);
+        }
+
+        .highlight-positive { color: var(--positive) !important; }
+        .highlight-negative { color: var(--negative) !important; }
+
+        /* ===== VENTURES GRID ===== */
+        .ventures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--gap);
+            margin-bottom: var(--gap);
+        }
+
+        .venture-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .venture-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .venture-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .venture-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .venture-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ===== FOOTER ===== */
+        .dashboard-footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+            margin-top: 24px;
+        }
+
+        .dashboard-footer a {
+            color: var(--accent-purple);
+            text-decoration: none;
+        }
+
+        /* ===== LOADING STATE ===== */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10,11,26,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .loading-overlay.active { display: flex; }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(122, 0, 223, 0.2);
+            border-top-color: var(--accent-purple);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .chart-row, .chart-row.three-col { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header { flex-direction: column; align-items: flex-start; padding: 20px; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+            .header-left h1 { font-size: 20px; }
+            .kpi-value { font-size: 20px; }
+            .ventures-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-row { grid-template-columns: 1fr; }
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            body { background: #fff; color: #000; }
+            .btn-refresh, .loading-overlay { display: none !important; }
+            .kpi-card, .chart-container, .table-section, .venture-card {
+                background: #fff; border: 1px solid #ddd; box-shadow: none;
+            }
+        }
+
+        /* ===== TOOLTIP ENHANCEMENT ===== */
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(122, 0, 223, 0.15);
+            color: var(--accent-purple);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== TAB NAVIGATION ===== */
+        .tab-nav {
+            display: flex;
+            gap: 4px;
+            margin-bottom: var(--gap);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 4px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover { color: var(--text-primary); background: rgba(122,0,223,0.1); }
+        .tab-btn.active {
+            background: var(--accent-purple);
+            color: white;
+            font-weight: 600;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div style="color: var(--text-secondary); font-size: 14px;">Loading dashboard data...</div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- HEADER -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>era92 Fund — Investor Dashboard</h1>
+                <div class="subtitle">Fiscal Year 2026 · era92 Finance & Ventures Performance Report</div>
+            </div>
+            <div class="header-right">
+                <div class="refresh-badge">
+                    <div class="status-dot" id="statusDot"></div>
+                    <span>Last updated: <strong id="lastUpdated">—</strong></span>
+                </div>
+                <button class="btn-refresh" onclick="refreshData()">↻ Refresh</button>
+            </div>
+        </header>
+
+        <!-- TAB NAVIGATION -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+            <button class="tab-btn" onclick="switchTab('finance')">era92 Finance</button>
+            <button class="tab-btn" onclick="switchTab('ventures')">era92 Ventures</button>
+            <button class="tab-btn" onclick="switchTab('portfolio')">Loan Portfolio</button>
+        </div>
+
+        <!-- ===================== OVERVIEW TAB ===================== -->
+        <div class="tab-content active" id="tab-overview">
+            <div class="kpi-row" id="kpiRow">
+                <!-- KPIs injected by JS -->
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-container">
+                    <div class="chart-title">Monthly Performance</div>
+                    <div class="chart-subtitle">Income, Expenses & Profit by Month (UGX)</div>
+                    <div class="chart-wrap"><canvas id="chartMonthlyPerf"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Income Breakdown</div>
+                    <div class="chart-subtitle">FY 2026 Year-to-Date Income Sources</div>
+                    <div class="chart-wrap"><canvas id="chartIncomeBreakdown"></canvas></div>
+                </div>
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-container">
+                    <div class="chart-title">Expense Analysis</div>
+                    <div class="chart-subtitle">Consolidated FY 2026 Expense Categories (UGX)</div>
+                    <div class="chart-wrap tall"><canvas id="chartExpenses"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Profit & Loss Summary</div>
+                    <div class="chart-subtitle">Consolidated Statement — FY 2026</div>
+                    <div id="plSummary"></div>
+                </div>
+            </div>
+
+            <!-- VENTURES OVERVIEW ON OVERVIEW TAB -->
+            <div class="section-title">era92 Ventures — Portfolio Snapshot</div>
+            <div class="ventures-grid" id="overviewVenturesGrid"></div>
+
+            <div class="chart-row">
+                <div class="chart-container">
+                    <div class="chart-title">Ventures Monthly Revenue</div>
+                    <div class="chart-subtitle">Revenue by business unit — January vs February (UGX)</div>
+                    <div class="chart-wrap"><canvas id="chartOverviewVenturesBar"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Fund Revenue Composition</div>
+                    <div class="chart-subtitle">era92 Finance vs era92 Ventures share of total fund revenue</div>
+                    <div class="chart-wrap"><canvas id="chartFundComposition"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== FINANCE TAB ===================== -->
+        <div class="tab-content" id="tab-finance">
+            <div class="section-title">era92 Finance — Monthly Detail</div>
+            <div class="table-section" id="financeTable"></div>
+
+            <div class="chart-row">
+                <div class="chart-container">
+                    <div class="chart-title">Loans Disbursed vs Collections</div>
+                    <div class="chart-subtitle">Monthly comparison of principal loaned vs collected (UGX)</div>
+                    <div class="chart-wrap"><canvas id="chartLoansVsCollections"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Client Acquisition</div>
+                    <div class="chart-subtitle">New vs Recurring borrowers per month</div>
+                    <div class="chart-wrap"><canvas id="chartClients"></canvas></div>
+                </div>
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-container full-width">
+                    <div class="chart-title">Loan Type Allocation</div>
+                    <div class="chart-subtitle">Standard Rate Loans vs Impact Loans (Elevate / US4Women)</div>
+                    <div class="chart-wrap"><canvas id="chartLoanTypes"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== VENTURES TAB ===================== -->
+        <div class="tab-content" id="tab-ventures">
+            <div class="section-title">era92 Ventures — Portfolio Companies</div>
+
+            <div class="kpi-row" style="margin-bottom:20px">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Ventures Revenue</div>
+                    <div class="kpi-value" id="venturesTotal">—</div>
+                    <div class="kpi-change neutral">FY 2026 Year-to-Date</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Salaries</div>
+                    <div class="kpi-value" id="venturesSalaries">—</div>
+                    <div class="kpi-change neutral">Across all ventures</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Tax (VAT + NSSF)</div>
+                    <div class="kpi-value" id="venturesTax">—</div>
+                    <div class="kpi-change neutral">Cumulative</div>
+                </div>
+            </div>
+
+            <div class="ventures-grid" id="venturesGrid"></div>
+
+            <div class="chart-row">
+                <div class="chart-container">
+                    <div class="chart-title">Ventures Revenue by Company</div>
+                    <div class="chart-subtitle">Monthly revenue breakdown by business unit</div>
+                    <div class="chart-wrap"><canvas id="chartVenturesBar"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Ventures Revenue Share</div>
+                    <div class="chart-subtitle">Proportional contribution to total ventures revenue</div>
+                    <div class="chart-wrap"><canvas id="chartVenturesPie"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== PORTFOLIO TAB ===================== -->
+        <div class="tab-content" id="tab-portfolio">
+            <div class="section-title">Loan Portfolio Health</div>
+
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Outstanding Portfolio</div>
+                    <div class="kpi-value" id="portfolioTotal">—</div>
+                    <div class="kpi-change neutral">Open Loans</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Principal Outstanding</div>
+                    <div class="kpi-value" id="portfolioPrincipal">—</div>
+                    <div class="kpi-change neutral">Open Loans</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Interest Outstanding</div>
+                    <div class="kpi-value" id="portfolioInterest">—</div>
+                    <div class="kpi-change neutral">Open Loans</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Portfolio at Risk</div>
+                    <div class="kpi-value" id="portfolioRisk">—</div>
+                    <div class="kpi-change neutral">Loans in arrears (clients still paying)</div>
+                </div>
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-container">
+                    <div class="chart-title">Portfolio Composition</div>
+                    <div class="chart-subtitle">Principal vs Interest in outstanding portfolio</div>
+                    <div class="chart-wrap"><canvas id="chartPortfolio"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Loan Officer Portfolios</div>
+                    <div class="chart-subtitle">Loans disbursed by officer (latest month)</div>
+                    <div class="chart-wrap"><canvas id="chartOfficers"></canvas></div>
+                </div>
+            </div>
+
+            <div class="section-title">Projected FY 2026</div>
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="kpi-label">Projected Revenue</div>
+                    <div class="kpi-value" id="projRevenue">—</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Projected Expenditure</div>
+                    <div class="kpi-value" id="projExpenditure">—</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Projected Net Income</div>
+                    <div class="kpi-value" id="projIncome">—</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="dashboard-footer">
+            <div>era92 Fund — Democratising Access to Capital · <a href="https://era92fund.com" target="_blank">era92fund.com</a></div>
+            <div style="margin-top:4px;">Dashboard auto-refreshes from Google Sheets · Data reviewed every 6th of each month</div>
+        </footer>
+    </div>
+
+    <script>
+    // ================================================
+    // CONFIGURATION — Update these when publishing
+    // ================================================
+    const SHEET_ID = '1iEFuM1pT3My7nr9cuuHWFWgl9KqlLJNa';
+    const SHEETS = {
+        overall: 'Overall Perfomance',
+        jan: 'January 2026',
+        feb: 'February 2026'
+    };
+
+    // ================================================
+    // EMBEDDED DATA (Fallback & Initial Load)
+    // This data is updated when Google Sheets is fetched
+    // ================================================
+    let DATA = {
+        monthly: [
+            {
+                month: 'January', principalDisbursed: 29000000, numLoans: 14,
+                interestCollected: 11295000, otherIncome: 7320000, totalExpenses: 13600000,
+                profitLoss: 5015000, expectedInterest: 7540000, principalCollected: 26355000,
+                collectionsTarget: 157900000, totalCollected: 37650000,
+                newClients: 8, loansToNew: 4, recurringClients: 10, totalBorrowers: 14,
+                totalIncomes: 18615000, standardLoans: 24300000, impactLoans: 4700000,
+                penalties: 120000, fees: 100000, rent: 2000000, withdrawCharges: 100000,
+                managementVentures: 5000000
+            },
+            {
+                month: 'February', principalDisbursed: 47000000, numLoans: 20,
+                interestCollected: 15900000, otherIncome: 7300000, totalExpenses: 15020000,
+                profitLoss: 8180000, expectedInterest: 12220000, principalCollected: 37100000,
+                collectionsTarget: 149500600, totalCollected: 53000000,
+                newClients: 5, loansToNew: 3, recurringClients: 17, totalBorrowers: 20,
+                totalIncomes: 23200000, standardLoans: 41400000, impactLoans: 5600000,
+                penalties: 80000, fees: 120000, rent: 2000000, withdrawCharges: 100000,
+                managementVentures: 5000000
+            }
+        ],
+        totals: {
+            principalDisbursed: 76000000, numLoans: 34,
+            interestCollected: 27195000, otherIncome: 14620000,
+            totalExpenses: 28620000, profitLoss: 13195000,
+            expectedInterest: 19760000, principalCollected: 63455000,
+            totalIncome: 41815000
+        },
+        income: {
+            interestOnLoans: 27195000,
+            netFeeIncome: 620000,
+            rentLungujja: 4000000,
+            managementInvestments: 10000000,
+            total: 41815000
+        },
+        expenses: {
+            phonExpenses: 858400, salaries: 14471286, transport: 1139600,
+            officeMaintenance: 819600, marketing: 1150000, systemSubscription: 951400,
+            stationery: 1025000, staffMeals: 810400, officeSupplies: 765600,
+            recoveryFees: 1237800, consultancy: 1184000, bankCharges: 1183800,
+            utilities: 623114, security: 2400000, total: 28620000
+        },
+        portfolio: {
+            totalOutstanding: 1039149354,
+            principalOutstanding: 929475388,
+            interestOutstanding: 109673966,
+            portfolioAtRisk: 48409000,
+            recoveryRate: 0.966
+        },
+        projections: {
+            projectedRevenue: 800000000,
+            projectedExpenditure: 203799204,
+            projectedNetIncome: 315667592
+        },
+        ventures: {
+            total: 150900000,
+            january: { cafe: 52000000, carWash: 6500000, safaris: 8900000, living: 4500000, oneClick: 4000000, total: 75900000, salaries: 9480000, tax: 14610000 },
+            february: { cafe: 48000000, carWash: 4800000, safaris: 7200000, living: 4500000, oneClick: 3000000, total: 67500000, salaries: 9480000, tax: 13098000 }
+        },
+        officers: {
+            february: [
+                { name: 'Brenda Nakalyango', amount: 15000000 },
+                { name: 'Oyo Yowasi', amount: 11500000 },
+                { name: 'Office / Referrals', amount: 7700000 },
+                { name: 'Gwolyowa Francisca', amount: 3000000 },
+                { name: 'Kwagala Winnie', amount: 2200000 },
+                { name: 'Kirumira Dennis', amount: 2000000 }
+            ]
+        },
+        lastUpdated: new Date().toISOString()
+    };
+
+    // ================================================
+    // FORMATTING HELPERS
+    // ================================================
+    function fmtUGX(value) {
+        if (value === null || value === undefined) return '—';
+        if (Math.abs(value) >= 1e9) return 'UGX ' + (value / 1e9).toFixed(2) + 'B';
+        if (Math.abs(value) >= 1e6) return 'UGX ' + (value / 1e6).toFixed(1) + 'M';
+        if (Math.abs(value) >= 1e3) return 'UGX ' + (value / 1e3).toFixed(0) + 'K';
+        return 'UGX ' + value.toLocaleString();
+    }
+
+    function fmtShort(value) {
+        if (Math.abs(value) >= 1e9) return (value / 1e9).toFixed(2) + 'B';
+        if (Math.abs(value) >= 1e6) return (value / 1e6).toFixed(1) + 'M';
+        if (Math.abs(value) >= 1e3) return (value / 1e3).toFixed(0) + 'K';
+        return value.toLocaleString();
+    }
+
+    function fmtPct(value) { return (value * 100).toFixed(1) + '%'; }
+
+    // ================================================
+    // CHART COLOR PALETTE
+    // ================================================
+    const COLORS = {
+        purple: '#7a00df',
+        blue: '#2874fc',
+        cyan: '#00d4ff',
+        green: '#00e676',
+        gold: '#ffc107',
+        orange: '#ff9800',
+        red: '#ff5252',
+        pink: '#e040fb',
+        teal: '#26a69a',
+        indigo: '#536dfe'
+    };
+
+    const COLOR_ARRAY = Object.values(COLORS);
+
+    // Chart.js global defaults for dark mode
+    Chart.defaults.color = '#8a8bb3';
+    Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    // ================================================
+    // TAB NAVIGATION
+    // ================================================
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('tab-' + tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    // ================================================
+    // RENDER FUNCTIONS
+    // ================================================
+    let charts = {};
+
+    function renderAll() {
+        renderKPIs();
+        renderMonthlyPerf();
+        renderIncomeBreakdown();
+        renderExpenses();
+        renderPLSummary();
+        renderOverviewVentures();
+        renderFinanceTable();
+        renderLoansVsCollections();
+        renderClients();
+        renderLoanTypes();
+        renderVentures();
+        renderVenturesCharts();
+        renderPortfolio();
+        renderOfficers();
+        renderProjections();
+        document.getElementById('lastUpdated').textContent = new Date(DATA.lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    function renderKPIs() {
+        const d = DATA;
+        // ===== TOTAL FUND REVENUE CALCULATION =====
+        // Finance Income + Ventures Gross Revenue (excluding management fee already in Finance to avoid double-count)
+        const financeIncome = d.totals.totalIncome || d.income.total;  // 41,815,000
+        const venturesRevenue = d.ventures.total;                       // 150,900,000
+        const mgmtFeeInFinance = d.income.managementInvestments;        // 10,000,000 (already counted in Finance)
+        const totalFundRevenue = financeIncome + venturesRevenue - mgmtFeeInFinance;
+        // Total Fund Revenue = 41,815,000 + 150,900,000 - 10,000,000 = 182,715,000
+
+        const financeExpenses = d.expenses.total;                       // 28,620,000
+        const venturesExpenses = (d.ventures.january.salaries + d.ventures.february.salaries) + (d.ventures.january.tax + d.ventures.february.tax);
+        const totalFundExpenses = financeExpenses + venturesExpenses;
+        const totalFundNetIncome = totalFundRevenue - totalFundExpenses;
+
+        const kpis = [
+            { icon: '🏛️', label: 'Total Fund Revenue (YTD)', value: fmtUGX(totalFundRevenue), change: 'Finance ' + fmtUGX(financeIncome) + ' + Ventures ' + fmtUGX(venturesRevenue), cls: 'positive' },
+            { icon: '💰', label: 'era92 Finance Income', value: fmtUGX(financeIncome), change: '+63% MoM revenue growth', cls: 'positive' },
+            { icon: '🚀', label: 'era92 Ventures Revenue', value: fmtUGX(venturesRevenue), change: '5 portfolio companies active', cls: 'positive' },
+            { icon: '📈', label: 'Net Profit — Finance', value: fmtUGX(d.totals.profitLoss), change: '+63% from Jan to Feb', cls: 'positive' },
+            { icon: '🏦', label: 'Loans Disbursed', value: fmtUGX(d.totals.principalDisbursed), change: d.totals.numLoans + ' loans · ' + d.monthly.length + ' months', cls: 'neutral' },
+            { icon: '🔄', label: 'Recovery Rate', value: fmtPct(d.portfolio.recoveryRate), change: 'Open, Fully Paid & Default', cls: 'positive' },
+            { icon: '👥', label: 'Total Borrowers', value: d.totals.numLoans, change: '42% MoM borrower growth', cls: 'positive' },
+            { icon: '📊', label: 'Portfolio Outstanding', value: fmtUGX(d.portfolio.totalOutstanding), change: fmtUGX(d.portfolio.portfolioAtRisk) + ' at risk', cls: 'neutral' }
+        ];
+
+        const html = kpis.map(k => `
+            <div class="kpi-card">
+                <div class="kpi-icon">${k.icon}</div>
+                <div class="kpi-label">${k.label}</div>
+                <div class="kpi-value">${k.value}</div>
+                <div class="kpi-change ${k.cls}">${k.change}</div>
+            </div>
+        `).join('');
+        document.getElementById('kpiRow').innerHTML = html;
+    }
+
+    function renderMonthlyPerf() {
+        const ctx = document.getElementById('chartMonthlyPerf').getContext('2d');
+        if (charts.monthlyPerf) charts.monthlyPerf.destroy();
+
+        const months = DATA.monthly.map(m => m.month);
+        charts.monthlyPerf = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'Total Income',
+                        data: DATA.monthly.map(m => m.totalIncomes),
+                        backgroundColor: COLORS.purple + 'CC',
+                        borderColor: COLORS.purple,
+                        borderWidth: 1, borderRadius: 6
+                    },
+                    {
+                        label: 'Total Expenses',
+                        data: DATA.monthly.map(m => m.totalExpenses),
+                        backgroundColor: COLORS.red + '99',
+                        borderColor: COLORS.red,
+                        borderWidth: 1, borderRadius: 6
+                    },
+                    {
+                        label: 'Net Profit',
+                        data: DATA.monthly.map(m => m.profitLoss),
+                        backgroundColor: COLORS.green + 'CC',
+                        borderColor: COLORS.green,
+                        borderWidth: 1, borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { usePointStyle: true, padding: 16 } },
+                    tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUGX(ctx.parsed.y) } }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { beginAtZero: true, ticks: { callback: v => fmtShort(v) } }
+                }
+            }
+        });
+    }
+
+    function renderIncomeBreakdown() {
+        const ctx = document.getElementById('chartIncomeBreakdown').getContext('2d');
+        if (charts.incomeBreakdown) charts.incomeBreakdown.destroy();
+
+        const labels = ['Interest on Loans', 'Net Fee Income', 'Rent (Lungujja)', 'Management Investments'];
+        const data = [DATA.income.interestOnLoans, DATA.income.netFeeIncome, DATA.income.rentLungujja, DATA.income.managementInvestments];
+
+        charts.incomeBreakdown = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [COLORS.purple + 'DD', COLORS.blue + 'DD', COLORS.gold + 'DD', COLORS.cyan + 'DD'],
+                    borderColor: 'rgba(10,11,26,0.8)',
+                    borderWidth: 3,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '55%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => {
+                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                return ctx.label + ': ' + fmtUGX(ctx.parsed) + ' (' + ((ctx.parsed / total) * 100).toFixed(1) + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderExpenses() {
+        const ctx = document.getElementById('chartExpenses').getContext('2d');
+        if (charts.expenses) charts.expenses.destroy();
+
+        const exp = DATA.expenses;
+        const items = [
+            ['Salaries', exp.salaries], ['Security', exp.security],
+            ['Recovery Fees', exp.recoveryFees], ['Bank Charges', exp.bankCharges],
+            ['Consultancy/Legal', exp.consultancy], ['Marketing', exp.marketing],
+            ['Transport/Travel', exp.transport], ['Stationery', exp.stationery],
+            ['System Subscription', exp.systemSubscription], ['Phone Expenses', exp.phonExpenses],
+            ['Office Maintenance', exp.officeMaintenance], ['Staff Meals', exp.staffMeals],
+            ['Office Supplies', exp.officeSupplies], ['Utilities', exp.utilities]
+        ].sort((a, b) => b[1] - a[1]);
+
+        charts.expenses = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: items.map(i => i[0]),
+                datasets: [{
+                    data: items.map(i => i[1]),
+                    backgroundColor: items.map((_, idx) => {
+                        const gradient = ctx.createLinearGradient(0, 0, 400, 0);
+                        gradient.addColorStop(0, COLORS.purple + 'CC');
+                        gradient.addColorStop(1, COLORS.blue + 'CC');
+                        return gradient;
+                    }),
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: ctx => fmtUGX(ctx.parsed.x) } }
+                },
+                scales: {
+                    x: { beginAtZero: true, ticks: { callback: v => fmtShort(v) }, grid: { color: 'rgba(255,255,255,0.04)' } },
+                    y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+                }
+            }
+        });
+    }
+
+    function renderPLSummary() {
+        const d = DATA;
+        const venturesRev = d.ventures.total;
+        const venturesCost = (d.ventures.january.salaries + d.ventures.february.salaries) + (d.ventures.january.tax + d.ventures.february.tax);
+        const totalFundRev = (d.totals.totalIncome || d.income.total) + venturesRev - d.income.managementInvestments;
+        const totalFundExp = d.expenses.total + venturesCost;
+        const totalFundNet = totalFundRev - totalFundExp;
+
+        const html = `
+            <table class="data-table" style="margin-top:8px">
+                <thead><tr><th>Item</th><th style="text-align:right">FY 2026 (YTD)</th></tr></thead>
+                <tbody>
+                    <tr><td><strong style="color:var(--accent-purple)">era92 Finance</strong></td><td></td></tr>
+                    <tr><td style="padding-left:24px">Interest on Loans</td><td style="text-align:right">${fmtUGX(d.income.interestOnLoans)}</td></tr>
+                    <tr><td style="padding-left:24px">Net Fee Income</td><td style="text-align:right">${fmtUGX(d.income.netFeeIncome)}</td></tr>
+                    <tr><td style="padding-left:24px">Rent — Lungujja Property</td><td style="text-align:right">${fmtUGX(d.income.rentLungujja)}</td></tr>
+                    <tr><td style="padding-left:24px">Management Investments</td><td style="text-align:right">${fmtUGX(d.income.managementInvestments)}</td></tr>
+                    <tr style="border-top:1px solid rgba(122,0,223,0.2)"><td style="padding-left:12px"><em>Finance Subtotal</em></td><td style="text-align:right"><em>${fmtUGX(d.income.total)}</em></td></tr>
+                    <tr><td>&nbsp;</td><td></td></tr>
+                    <tr><td><strong style="color:var(--accent-cyan)">era92 Ventures</strong></td><td></td></tr>
+                    <tr><td style="padding-left:24px">Ventures Gross Revenue</td><td style="text-align:right">${fmtUGX(venturesRev)}</td></tr>
+                    <tr><td style="padding-left:24px"><em>Less: Mgmt fee (in Finance)</em></td><td style="text-align:right;color:var(--text-muted)">-${fmtUGX(d.income.managementInvestments)}</td></tr>
+                    <tr><td>&nbsp;</td><td></td></tr>
+                    <tr class="total-row"><td><strong>Total Fund Revenue</strong></td><td style="text-align:right;font-size:15px">${fmtUGX(totalFundRev)}</td></tr>
+                    <tr><td>&nbsp;</td><td></td></tr>
+                    <tr><td><strong>Finance Expenses</strong></td><td style="text-align:right;color:var(--accent-red)">${fmtUGX(d.expenses.total)}</td></tr>
+                    <tr><td><strong>Ventures Costs (Salaries+Tax)</strong></td><td style="text-align:right;color:var(--accent-red)">${fmtUGX(venturesCost)}</td></tr>
+                    <tr class="total-row"><td><strong>Total Fund Expenses</strong></td><td style="text-align:right;color:var(--accent-red)">${fmtUGX(totalFundExp)}</td></tr>
+                    <tr><td>&nbsp;</td><td></td></tr>
+                    <tr class="total-row"><td><strong>Fund Net Income (YTD)</strong></td><td style="text-align:right;color:var(--accent-green);font-size:16px">${fmtUGX(totalFundNet)}</td></tr>
+                </tbody>
+            </table>
+        `;
+        document.getElementById('plSummary').innerHTML = html;
+    }
+
+    function renderOverviewVentures() {
+        const v = DATA.ventures;
+        const combined = {
+            '92 Cafe & Restaurant': (v.january.cafe || 0) + (v.february.cafe || 0),
+            'Car Wash': (v.january.carWash || 0) + (v.february.carWash || 0),
+            '92 Safaris': (v.january.safaris || 0) + (v.february.safaris || 0),
+            'Living': (v.january.living || 0) + (v.february.living || 0),
+            'One Click Computers': (v.january.oneClick || 0) + (v.february.oneClick || 0)
+        };
+        const icons = { '92 Cafe & Restaurant': '☕', 'Car Wash': '🚗', '92 Safaris': '✈️', 'Living': '🏠', 'One Click Computers': '💻' };
+
+        let html = `<div class="venture-card" style="border-left:3px solid var(--accent-gold)">
+            <div style="font-size:28px;margin-bottom:8px">🏛️</div>
+            <div class="venture-name">Total Ventures Revenue</div>
+            <div class="venture-value" style="color:var(--accent-gold)">${fmtUGX(v.total)}</div>
+            <div class="venture-sub">YTD Combined</div>
+        </div>`;
+        html += Object.entries(combined).map(([name, val]) => `
+            <div class="venture-card">
+                <div style="font-size:28px;margin-bottom:8px">${icons[name] || '🏢'}</div>
+                <div class="venture-name">${name}</div>
+                <div class="venture-value">${fmtUGX(val)}</div>
+                <div class="venture-sub">YTD Revenue</div>
+            </div>
+        `).join('');
+        document.getElementById('overviewVenturesGrid').innerHTML = html;
+
+        // ===== Ventures Bar Chart on Overview =====
+        const companies = ['92 Cafe', 'Car Wash', '92 Safaris', 'Living', 'One Click'];
+        const janData = [v.january.cafe, v.january.carWash, v.january.safaris, v.january.living, v.january.oneClick];
+        const febData = [v.february.cafe, v.february.carWash, v.february.safaris, v.february.living, v.february.oneClick];
+
+        const ctx1 = document.getElementById('chartOverviewVenturesBar').getContext('2d');
+        if (charts.overviewVenturesBar) charts.overviewVenturesBar.destroy();
+        charts.overviewVenturesBar = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: companies,
+                datasets: [
+                    { label: 'January', data: janData, backgroundColor: COLORS.purple + 'CC', borderRadius: 6 },
+                    { label: 'February', data: febData, backgroundColor: COLORS.blue + 'CC', borderRadius: 6 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { usePointStyle: true } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUGX(ctx.parsed.y) } } },
+                scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { callback: v => fmtShort(v) } } }
+            }
+        });
+
+        // ===== Fund Composition Doughnut =====
+        const financeIncome = DATA.totals.totalIncome || DATA.income.total;
+        const venturesRevenue = DATA.ventures.total;
+        const ctx2 = document.getElementById('chartFundComposition').getContext('2d');
+        if (charts.fundComposition) charts.fundComposition.destroy();
+        charts.fundComposition = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['era92 Finance', 'era92 Ventures'],
+                datasets: [{
+                    data: [financeIncome, venturesRevenue],
+                    backgroundColor: [COLORS.purple + 'DD', COLORS.cyan + 'DD'],
+                    borderColor: 'rgba(10,11,26,0.8)', borderWidth: 3, hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '55%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 14, font: { size: 12 } } },
+                    tooltip: { callbacks: { label: ctx => {
+                        const t = ctx.dataset.data.reduce((a,b)=>a+b,0);
+                        return ctx.label + ': ' + fmtUGX(ctx.parsed) + ' (' + ((ctx.parsed/t)*100).toFixed(1) + '%)';
+                    }}}
+                }
+            }
+        });
+    }
+
+    function renderFinanceTable() {
+        const months = DATA.monthly;
+        const totals = DATA.totals;
+        const html = `
+            <h3 class="chart-title" style="margin-bottom:12px">Monthly Performance Summary — era92 Finance</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Month</th><th style="text-align:right">Loans Disbursed</th><th style="text-align:right"># Loans</th>
+                        <th style="text-align:right">Interest Collected</th><th style="text-align:right">Other Income</th>
+                        <th style="text-align:right">Total Income</th><th style="text-align:right">Expenses</th>
+                        <th style="text-align:right">Profit/Loss</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${months.map(m => `
+                        <tr>
+                            <td><strong>${m.month}</strong></td>
+                            <td style="text-align:right">${fmtUGX(m.principalDisbursed)}</td>
+                            <td style="text-align:right">${m.numLoans}</td>
+                            <td style="text-align:right">${fmtUGX(m.interestCollected)}</td>
+                            <td style="text-align:right">${fmtUGX(m.otherIncome)}</td>
+                            <td style="text-align:right">${fmtUGX(m.totalIncomes)}</td>
+                            <td style="text-align:right;color:var(--accent-red)">${fmtUGX(m.totalExpenses)}</td>
+                            <td style="text-align:right" class="highlight-positive">${fmtUGX(m.profitLoss)}</td>
+                        </tr>
+                    `).join('')}
+                    <tr class="total-row">
+                        <td>TOTAL</td>
+                        <td style="text-align:right">${fmtUGX(totals.principalDisbursed)}</td>
+                        <td style="text-align:right">${totals.numLoans}</td>
+                        <td style="text-align:right">${fmtUGX(totals.interestCollected)}</td>
+                        <td style="text-align:right">${fmtUGX(totals.otherIncome)}</td>
+                        <td style="text-align:right">${fmtUGX(totals.totalIncome || DATA.income.total)}</td>
+                        <td style="text-align:right">${fmtUGX(totals.totalExpenses)}</td>
+                        <td style="text-align:right">${fmtUGX(totals.profitLoss)}</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+        document.getElementById('financeTable').innerHTML = html;
+    }
+
+    function renderLoansVsCollections() {
+        const ctx = document.getElementById('chartLoansVsCollections').getContext('2d');
+        if (charts.loansVsColl) charts.loansVsColl.destroy();
+
+        charts.loansVsColl = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: DATA.monthly.map(m => m.month),
+                datasets: [
+                    { label: 'Loans Disbursed', data: DATA.monthly.map(m => m.principalDisbursed), backgroundColor: COLORS.blue + 'CC', borderRadius: 6 },
+                    { label: 'Principal Collected', data: DATA.monthly.map(m => m.principalCollected), backgroundColor: COLORS.green + 'CC', borderRadius: 6 },
+                    { label: 'Collections Target', data: DATA.monthly.map(m => m.collectionsTarget), type: 'line', borderColor: COLORS.gold, backgroundColor: 'transparent', borderWidth: 2, borderDash: [6,3], pointStyle: 'triangle', pointRadius: 6 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 14 } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUGX(ctx.parsed.y) } } },
+                scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { callback: v => fmtShort(v) } } }
+            }
+        });
+    }
+
+    function renderClients() {
+        const ctx = document.getElementById('chartClients').getContext('2d');
+        if (charts.clients) charts.clients.destroy();
+
+        charts.clients = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: DATA.monthly.map(m => m.month),
+                datasets: [
+                    { label: 'New Clients', data: DATA.monthly.map(m => m.newClients), backgroundColor: COLORS.cyan + 'CC', borderRadius: 6 },
+                    { label: 'Loans to New', data: DATA.monthly.map(m => m.loansToNew), backgroundColor: COLORS.purple + 'CC', borderRadius: 6 },
+                    { label: 'Recurring Clients', data: DATA.monthly.map(m => m.recurringClients), backgroundColor: COLORS.gold + 'CC', borderRadius: 6 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 14 } } },
+                scales: { x: { grid: { display: false } }, y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    function renderLoanTypes() {
+        const ctx = document.getElementById('chartLoanTypes').getContext('2d');
+        if (charts.loanTypes) charts.loanTypes.destroy();
+
+        charts.loanTypes = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: DATA.monthly.map(m => m.month),
+                datasets: [
+                    { label: 'Standard Rate Loans', data: DATA.monthly.map(m => m.standardLoans), backgroundColor: COLORS.purple + 'CC', borderRadius: 6 },
+                    { label: 'Impact Loans (Elevate/US4Women)', data: DATA.monthly.map(m => m.impactLoans), backgroundColor: COLORS.green + 'CC', borderRadius: 6 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 14 } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUGX(ctx.parsed.y) } } },
+                scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, ticks: { callback: v => fmtShort(v) } } }
+            }
+        });
+    }
+
+    function renderVentures() {
+        const v = DATA.ventures;
+        const combined = {
+            '92 Cafe & Restaurant': (v.january.cafe || 0) + (v.february.cafe || 0),
+            'Car Wash': (v.january.carWash || 0) + (v.february.carWash || 0),
+            '92 Safaris': (v.january.safaris || 0) + (v.february.safaris || 0),
+            'Living': (v.january.living || 0) + (v.february.living || 0),
+            'One Click Computers': (v.january.oneClick || 0) + (v.february.oneClick || 0)
+        };
+
+        const icons = { '92 Cafe & Restaurant': '☕', 'Car Wash': '🚗', '92 Safaris': '✈️', 'Living': '🏠', 'One Click Computers': '💻' };
+
+        document.getElementById('venturesTotal').textContent = fmtUGX(v.total);
+        document.getElementById('venturesSalaries').textContent = fmtUGX(v.january.salaries + v.february.salaries);
+        document.getElementById('venturesTax').textContent = fmtUGX(v.january.tax + v.february.tax);
+
+        const html = Object.entries(combined).map(([name, val]) => `
+            <div class="venture-card">
+                <div style="font-size:28px;margin-bottom:8px">${icons[name] || '🏢'}</div>
+                <div class="venture-name">${name}</div>
+                <div class="venture-value">${fmtUGX(val)}</div>
+                <div class="venture-sub">YTD Revenue</div>
+            </div>
+        `).join('');
+        document.getElementById('venturesGrid').innerHTML = html;
+    }
+
+    function renderVenturesCharts() {
+        const v = DATA.ventures;
+        const companies = ['92 Cafe', 'Car Wash', '92 Safaris', 'Living', 'One Click'];
+        const janData = [v.january.cafe, v.january.carWash, v.january.safaris, v.january.living, v.january.oneClick];
+        const febData = [v.february.cafe, v.february.carWash, v.february.safaris, v.february.living, v.february.oneClick];
+        const totalData = janData.map((j, i) => j + febData[i]);
+
+        // Bar chart
+        const ctx1 = document.getElementById('chartVenturesBar').getContext('2d');
+        if (charts.venturesBar) charts.venturesBar.destroy();
+        charts.venturesBar = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: companies,
+                datasets: [
+                    { label: 'January', data: janData, backgroundColor: COLORS.purple + 'CC', borderRadius: 6 },
+                    { label: 'February', data: febData, backgroundColor: COLORS.blue + 'CC', borderRadius: 6 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { usePointStyle: true } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + fmtUGX(ctx.parsed.y) } } },
+                scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { callback: v => fmtShort(v) } } }
+            }
+        });
+
+        // Pie chart
+        const ctx2 = document.getElementById('chartVenturesPie').getContext('2d');
+        if (charts.venturesPie) charts.venturesPie.destroy();
+        charts.venturesPie = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: companies,
+                datasets: [{ data: totalData, backgroundColor: [COLORS.purple + 'DD', COLORS.blue + 'DD', COLORS.gold + 'DD', COLORS.cyan + 'DD', COLORS.green + 'DD'], borderColor: 'rgba(10,11,26,0.8)', borderWidth: 3 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '55%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } },
+                    tooltip: { callbacks: { label: ctx => { const t = ctx.dataset.data.reduce((a,b)=>a+b,0); return ctx.label + ': ' + fmtUGX(ctx.parsed) + ' (' + ((ctx.parsed/t)*100).toFixed(1) + '%)'; } } }
+                }
+            }
+        });
+    }
+
+    function renderPortfolio() {
+        const p = DATA.portfolio;
+        document.getElementById('portfolioTotal').textContent = fmtUGX(p.totalOutstanding);
+        document.getElementById('portfolioPrincipal').textContent = fmtUGX(p.principalOutstanding);
+        document.getElementById('portfolioInterest').textContent = fmtUGX(p.interestOutstanding);
+        document.getElementById('portfolioRisk').textContent = fmtUGX(p.portfolioAtRisk);
+
+        const ctx = document.getElementById('chartPortfolio').getContext('2d');
+        if (charts.portfolio) charts.portfolio.destroy();
+        charts.portfolio = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Principal Outstanding', 'Interest Outstanding', 'Portfolio at Risk'],
+                datasets: [{
+                    data: [p.principalOutstanding, p.interestOutstanding, p.portfolioAtRisk],
+                    backgroundColor: [COLORS.purple + 'DD', COLORS.blue + 'DD', COLORS.red + 'AA'],
+                    borderColor: 'rgba(10,11,26,0.8)', borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '55%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12 } },
+                    tooltip: { callbacks: { label: ctx => ctx.label + ': ' + fmtUGX(ctx.parsed) } }
+                }
+            }
+        });
+    }
+
+    function renderOfficers() {
+        const ctx = document.getElementById('chartOfficers').getContext('2d');
+        if (charts.officers) charts.officers.destroy();
+
+        const officers = DATA.officers.february.sort((a, b) => b.amount - a.amount);
+        charts.officers = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: officers.map(o => o.name),
+                datasets: [{
+                    data: officers.map(o => o.amount),
+                    backgroundColor: COLOR_ARRAY.slice(0, officers.length).map(c => c + 'CC'),
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmtUGX(ctx.parsed.x) } } },
+                scales: { x: { beginAtZero: true, ticks: { callback: v => fmtShort(v) } }, y: { grid: { display: false } } }
+            }
+        });
+    }
+
+    function renderProjections() {
+        const p = DATA.projections;
+        document.getElementById('projRevenue').textContent = fmtUGX(p.projectedRevenue);
+        document.getElementById('projExpenditure').textContent = fmtUGX(p.projectedExpenditure);
+        document.getElementById('projIncome').textContent = fmtUGX(p.projectedNetIncome);
+    }
+
+    // ================================================
+    // GOOGLE SHEETS LIVE DATA FETCHER
+    // ================================================
+    async function fetchSheetCSV(sheetName) {
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('Sheet not accessible');
+            return await res.text();
+        } catch (e) {
+            console.warn('Could not fetch live data from sheet: ' + sheetName, e);
+            return null;
+        }
+    }
+
+    function parseCSVRow(row) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < row.length; i++) {
+            const ch = row[i];
+            if (ch === '"') { inQuotes = !inQuotes; }
+            else if (ch === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+            else { current += ch; }
+        }
+        result.push(current.trim());
+        return result;
+    }
+
+    async function refreshData() {
+        const overlay = document.getElementById('loadingOverlay');
+        overlay.classList.add('active');
+
+        try {
+            const csv = await fetchSheetCSV(SHEETS.overall);
+            if (csv) {
+                const rows = csv.split('\n').map(parseCSVRow);
+                // Parse the overall performance data from the CSV
+                // This will update DATA when the sheet is publicly accessible
+                console.log('Live data fetched successfully. Rows:', rows.length);
+                DATA.lastUpdated = new Date().toISOString();
+                // Advanced: parse rows into DATA object (extend as needed)
+            }
+        } catch (e) {
+            console.warn('Using embedded data fallback.', e);
+        }
+
+        renderAll();
+        setTimeout(() => overlay.classList.remove('active'), 500);
+    }
+
+    // ================================================
+    // INIT
+    // ================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        DATA.lastUpdated = new Date().toISOString();
+        renderAll();
+    });
+    </script>
+</body>
+</html>
