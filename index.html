@@ -7,27 +7,27 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #0a0b1a;
-            --bg-card: #12132a;
-            --bg-card-hover: #1a1b3a;
-            --bg-header: linear-gradient(135deg, #020381 0%, #7a00df 50%, #2874fc 100%);
-            --bg-input: #1e1f3a;
-            --border: rgba(122, 0, 223, 0.2);
-            --border-hover: rgba(122, 0, 223, 0.5);
-            --text-primary: #f0f0ff;
-            --text-secondary: #8a8bb3;
-            --text-muted: #5a5b7a;
-            --accent-purple: #7a00df;
-            --accent-blue: #2874fc;
-            --accent-cyan: #00d4ff;
-            --accent-gold: #ffc107;
+            --bg-body: #000000;
+            --bg-card: #0a0a0a;
+            --bg-card-hover: #141414;
+            --bg-header: linear-gradient(135deg, #001a0a 0%, #003d1a 50%, #00e676 100%);
+            --bg-input: #111111;
+            --border: rgba(0, 230, 118, 0.15);
+            --border-hover: rgba(0, 230, 118, 0.4);
+            --text-primary: #e8f5e9;
+            --text-secondary: #6b8f71;
+            --text-muted: #3d5a42;
+            --accent-purple: #00e676;
+            --accent-blue: #00c853;
+            --accent-cyan: #69f0ae;
+            --accent-gold: #b9f6ca;
             --accent-green: #00e676;
             --accent-red: #ff5252;
-            --accent-orange: #ff9800;
-            --accent-pink: #e040fb;
+            --accent-orange: #76ff03;
+            --accent-pink: #00e676;
             --positive: #00e676;
             --negative: #ff5252;
             --gap: 16px;
@@ -38,7 +38,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg-body);
             color: var(--text-primary);
             line-height: 1.6;
@@ -77,16 +77,22 @@
             border-radius: 50%;
         }
 
-        .header-left { position: relative; z-index: 1; }
+        .header-left { position: relative; z-index: 1; display: flex; align-items: center; gap: 20px; }
 
-        .header-left h1 {
+        .header-logo {
+            height: 52px;
+            width: auto;
+            filter: drop-shadow(0 0 12px rgba(0, 230, 118, 0.3));
+        }
+
+        .header-text h1 {
             font-size: 26px;
             font-weight: 800;
             letter-spacing: -0.5px;
             margin-bottom: 4px;
         }
 
-        .header-left .subtitle {
+        .header-text .subtitle {
             font-size: 13px;
             color: rgba(255,255,255,0.65);
             font-weight: 400;
@@ -175,6 +181,7 @@
             background: var(--bg-card-hover);
             border-color: var(--border-hover);
             transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 230, 118, 0.08);
         }
 
         .kpi-card::after {
@@ -186,12 +193,12 @@
             height: 3px;
         }
 
-        .kpi-card:nth-child(1)::after { background: var(--accent-purple); }
-        .kpi-card:nth-child(2)::after { background: var(--accent-green); }
-        .kpi-card:nth-child(3)::after { background: var(--accent-blue); }
-        .kpi-card:nth-child(4)::after { background: var(--accent-gold); }
-        .kpi-card:nth-child(5)::after { background: var(--accent-cyan); }
-        .kpi-card:nth-child(6)::after { background: var(--accent-orange); }
+        .kpi-card:nth-child(1)::after { background: #00e676; }
+        .kpi-card:nth-child(2)::after { background: #00c853; }
+        .kpi-card:nth-child(3)::after { background: #69f0ae; }
+        .kpi-card:nth-child(4)::after { background: #1de9b6; }
+        .kpi-card:nth-child(5)::after { background: #b9f6ca; }
+        .kpi-card:nth-child(6)::after { background: #76ff03; }
 
         .kpi-icon {
             font-size: 20px;
@@ -209,7 +216,8 @@
 
         .kpi-value {
             font-size: 26px;
-            font-weight: 800;
+            font-weight: 700;
+            font-family: 'Space Mono', 'DM Sans', monospace;
             color: var(--text-primary);
             margin-bottom: 6px;
             letter-spacing: -0.5px;
@@ -296,7 +304,7 @@
         .data-table thead th {
             text-align: left;
             padding: 12px 14px;
-            border-bottom: 2px solid rgba(122, 0, 223, 0.3);
+            border-bottom: 2px solid rgba(0, 230, 118, 0.3);
             color: var(--text-secondary);
             font-weight: 600;
             font-size: 11px;
@@ -312,7 +320,7 @@
         }
 
         .data-table tbody tr:hover {
-            background: rgba(122, 0, 223, 0.08);
+            background: rgba(0, 230, 118, 0.08);
         }
 
         .data-table tbody tr:last-child td {
@@ -321,7 +329,7 @@
 
         .data-table .total-row td {
             font-weight: 700;
-            border-top: 2px solid rgba(122, 0, 223, 0.3);
+            border-top: 2px solid rgba(0, 230, 118, 0.3);
             color: var(--accent-gold);
         }
 
@@ -362,6 +370,7 @@
         .venture-value {
             font-size: 22px;
             font-weight: 700;
+            font-family: 'Space Mono', 'DM Sans', monospace;
             color: var(--text-primary);
         }
 
@@ -391,7 +400,7 @@
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10,11,26,0.9);
+            background: rgba(0,0,0,0.9);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -404,8 +413,8 @@
         .spinner {
             width: 48px;
             height: 48px;
-            border: 3px solid rgba(122, 0, 223, 0.2);
-            border-top-color: var(--accent-purple);
+            border: 3px solid rgba(0, 230, 118, 0.2);
+            border-top-color: var(--accent-green);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -419,8 +428,10 @@
 
         @media (max-width: 768px) {
             .dashboard-header { flex-direction: column; align-items: flex-start; padding: 20px; }
+            .header-left { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .header-logo { height: 40px; }
             .kpi-row { grid-template-columns: repeat(2, 1fr); }
-            .header-left h1 { font-size: 20px; }
+            .header-text h1 { font-size: 20px; }
             .kpi-value { font-size: 20px; }
             .ventures-grid { grid-template-columns: repeat(2, 1fr); }
         }
@@ -443,8 +454,8 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: rgba(122, 0, 223, 0.15);
-            color: var(--accent-purple);
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--accent-green);
             padding: 3px 8px;
             border-radius: 20px;
             font-size: 10px;
@@ -479,7 +490,7 @@
             white-space: nowrap;
         }
 
-        .tab-btn:hover { color: var(--text-primary); background: rgba(122,0,223,0.1); }
+        .tab-btn:hover { color: var(--text-primary); background: rgba(0,230,118,0.1); }
         .tab-btn.active {
             background: var(--accent-purple);
             color: white;
@@ -500,8 +511,11 @@
         <!-- HEADER -->
         <header class="dashboard-header">
             <div class="header-left">
-                <h1>era92 Fund — Investor Dashboard</h1>
-                <div class="subtitle">Fiscal Year 2026 · era92 Finance & Ventures Performance Report</div>
+                <img src="logo.svg" alt="era92 Fund" class="header-logo" onerror="this.style.display='none'">
+                <div class="header-text">
+                    <h1>era92 Fund — Investor Dashboard</h1>
+                    <div class="subtitle">Fiscal Year 2026 · era92 Finance & Ventures Performance Report</div>
+                </div>
             </div>
             <div class="header-right">
                 <div class="refresh-badge">
@@ -812,24 +826,24 @@
     // CHART COLOR PALETTE
     // ================================================
     const COLORS = {
-        purple: '#7a00df',
-        blue: '#2874fc',
-        cyan: '#00d4ff',
+        purple: '#00e676',
+        blue: '#00c853',
+        cyan: '#69f0ae',
         green: '#00e676',
-        gold: '#ffc107',
-        orange: '#ff9800',
+        gold: '#b9f6ca',
+        orange: '#76ff03',
         red: '#ff5252',
-        pink: '#e040fb',
-        teal: '#26a69a',
-        indigo: '#536dfe'
+        pink: '#00e676',
+        teal: '#1de9b6',
+        indigo: '#a5d6a7'
     };
 
     const COLOR_ARRAY = Object.values(COLORS);
 
     // Chart.js global defaults for dark mode
-    Chart.defaults.color = '#8a8bb3';
-    Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
-    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = '#6b8f71';
+    Chart.defaults.borderColor = 'rgba(0,230,118,0.06)';
+    Chart.defaults.font.family = "'DM Sans', sans-serif";
 
     // ================================================
     // TAB NAVIGATION
@@ -963,7 +977,7 @@
                 datasets: [{
                     data: data,
                     backgroundColor: [COLORS.purple + 'DD', COLORS.blue + 'DD', COLORS.gold + 'DD', COLORS.cyan + 'DD'],
-                    borderColor: 'rgba(10,11,26,0.8)',
+                    borderColor: 'rgba(0,0,0,0.8)',
                     borderWidth: 3,
                     hoverOffset: 8
                 }]
@@ -1046,7 +1060,7 @@
                     <tr><td style="padding-left:24px">Net Fee Income</td><td style="text-align:right">${fmtUGX(d.income.netFeeIncome)}</td></tr>
                     <tr><td style="padding-left:24px">Rent — Lungujja Property</td><td style="text-align:right">${fmtUGX(d.income.rentLungujja)}</td></tr>
                     <tr><td style="padding-left:24px">Management Investments</td><td style="text-align:right">${fmtUGX(d.income.managementInvestments)}</td></tr>
-                    <tr style="border-top:1px solid rgba(122,0,223,0.2)"><td style="padding-left:12px"><em>Finance Subtotal</em></td><td style="text-align:right"><em>${fmtUGX(d.income.total)}</em></td></tr>
+                    <tr style="border-top:1px solid rgba(0,230,118,0.2)"><td style="padding-left:12px"><em>Finance Subtotal</em></td><td style="text-align:right"><em>${fmtUGX(d.income.total)}</em></td></tr>
                     <tr><td>&nbsp;</td><td></td></tr>
                     <tr><td><strong style="color:var(--accent-cyan)">era92 Ventures</strong></td><td></td></tr>
                     <tr><td style="padding-left:24px">Ventures Gross Revenue</td><td style="text-align:right">${fmtUGX(venturesRev)}</td></tr>
@@ -1127,7 +1141,7 @@
                 datasets: [{
                     data: [financeIncome, venturesRevenue],
                     backgroundColor: [COLORS.purple + 'DD', COLORS.cyan + 'DD'],
-                    borderColor: 'rgba(10,11,26,0.8)', borderWidth: 3, hoverOffset: 8
+                    borderColor: 'rgba(0,0,0,0.8)', borderWidth: 3, hoverOffset: 8
                 }]
             },
             options: {
@@ -1311,7 +1325,7 @@
             type: 'doughnut',
             data: {
                 labels: companies,
-                datasets: [{ data: totalData, backgroundColor: [COLORS.purple + 'DD', COLORS.blue + 'DD', COLORS.gold + 'DD', COLORS.cyan + 'DD', COLORS.green + 'DD'], borderColor: 'rgba(10,11,26,0.8)', borderWidth: 3 }]
+                datasets: [{ data: totalData, backgroundColor: [COLORS.purple + 'DD', COLORS.blue + 'DD', COLORS.gold + 'DD', COLORS.cyan + 'DD', COLORS.green + 'DD'], borderColor: 'rgba(0,0,0,0.8)', borderWidth: 3 }]
             },
             options: {
                 responsive: true, maintainAspectRatio: false, cutout: '55%',
@@ -1339,7 +1353,7 @@
                 datasets: [{
                     data: [p.principalOutstanding, p.interestOutstanding, p.portfolioAtRisk],
                     backgroundColor: [COLORS.purple + 'DD', COLORS.blue + 'DD', COLORS.red + 'AA'],
-                    borderColor: 'rgba(10,11,26,0.8)', borderWidth: 3
+                    borderColor: 'rgba(0,0,0,0.8)', borderWidth: 3
                 }]
             },
             options: {
