@@ -14,7 +14,7 @@
   --brand-orange:#fc5e27; --brand-orange-lt:#ffa255;
   --brand-slate:#747a96; --brand-charcoal:#1f2027; --brand-cream:#faf6ed;
   --brand-red:#ff4151;
- 
+
   --bg-body:#141419; --bg-card:#1f2027; --bg-card-hover:#262730;
   --border:rgba(0,146,180,.18); --border-hover:rgba(0,146,180,.45);
   --text-primary:#e9f2f5; --text-secondary:#9aa4b4; --text-muted:#747a96;
@@ -24,7 +24,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg-body);color:var(--text-primary);-webkit-font-smoothing:antialiased;line-height:1.5}
 .wrap{max-width:1440px;margin:0 auto;padding:24px}
- 
+
 .header{background:linear-gradient(135deg,#00323d 0%,var(--brand-teal-dk) 55%,var(--brand-teal) 100%);border-radius:var(--radius);padding:22px 26px;margin-bottom:var(--gap);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
 .header h1{font-size:22px;font-weight:800;letter-spacing:-.4px}
 .header .sub{font-size:12.5px;opacity:.9;margin-top:3px}
@@ -40,12 +40,12 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 .btn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#fff;padding:8px 15px;border-radius:var(--radius-sm);font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
 .btn:hover{background:rgba(255,255,255,.26)}
 .btn:disabled{opacity:.5;cursor:default}
- 
+
 .banner{border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:var(--gap);font-size:12.5px;display:flex;gap:10px;align-items:flex-start}
 .banner.warn{background:rgba(252,94,39,.1);border:1px solid rgba(252,94,39,.35);color:#ffd2bf}
 .banner.info{background:rgba(0,146,180,.1);border:1px solid rgba(0,146,180,.32);color:var(--brand-teal-lt)}
 .banner b{color:#fff}
- 
+
 .tabs{display:flex;gap:4px;background:var(--bg-card);padding:5px;border-radius:var(--radius);margin-bottom:var(--gap);border:1px solid var(--border);overflow-x:auto}
 .tab{flex:1;min-width:130px;background:none;border:none;color:var(--text-secondary);padding:11px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s}
 .tab:hover{color:var(--text-primary);background:var(--bg-card-hover)}
@@ -53,7 +53,7 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 .panel{display:none}
 .panel.active{display:block;animation:fade .22s ease}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}}
- 
+
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:var(--gap);margin-bottom:var(--gap)}
 .kpi{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:17px 18px;transition:.15s;position:relative;overflow:hidden}
 .kpi:hover{border-color:var(--border-hover);background:var(--bg-card-hover)}
@@ -65,7 +65,7 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 .kpi .alt{font-size:11.5px;color:var(--text-secondary);font-variant-numeric:tabular-nums;margin-bottom:2px}
 .kpi .note{font-size:11px;color:var(--text-muted)}
 .kpi .note.up{color:#4ade80}.kpi .note.flag{color:var(--brand-orange)}
- 
+
 .section-title{font-size:15px;font-weight:700;margin:22px 0 12px;display:flex;align-items:center;gap:9px}
 .section-title::before{content:'';width:3px;height:15px;background:var(--brand-orange);border-radius:2px}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-bottom:var(--gap)}
@@ -74,7 +74,7 @@ body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-seri
 .card .cap{font-size:11px;color:var(--text-muted);margin-bottom:14px}
 .chart-wrap{height:290px;position:relative}
 .chart-wrap.wide{height:330px}
- 
+
 table{width:100%;border-collapse:collapse;font-size:12.5px}
 th{text-align:right;padding:9px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);font-weight:700;border-bottom:1px solid var(--border);white-space:nowrap}
 th:first-child,td:first-child{text-align:left}
@@ -89,7 +89,7 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
 .pill.ok{background:rgba(0,146,180,.18);color:#5ec5dd}
 .pill.mid{background:rgba(255,162,85,.18);color:var(--brand-orange-lt)}
 .pill.bad{background:rgba(252,94,39,.18);color:var(--brand-orange)}
- 
+
 .vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--gap);margin-bottom:var(--gap)}
 .vcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-top:3px solid var(--brand-teal)}
 .vcard.orange{border-top-color:var(--brand-orange)}
@@ -97,11 +97,11 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
 .vcard .v{font-size:21px;font-weight:800;margin:6px 0 1px;font-variant-numeric:tabular-nums}
 .vcard .a{font-size:11.5px;color:var(--text-secondary);font-variant-numeric:tabular-nums}
 .vcard .s{font-size:11px;color:var(--text-muted)}
- 
+
 .foot{text-align:center;padding:26px 0 10px;color:var(--text-muted);font-size:11.5px;border-top:1px solid var(--border);margin-top:26px}
 .foot a{color:var(--brand-teal);text-decoration:none}
 .foot a:hover{text-decoration:underline}
- 
+
 @media(max-width:1024px){.grid-2{grid-template-columns:1fr}}
 @media(max-width:768px){
   .wrap{padding:14px}.header{flex-direction:column;align-items:flex-start}
@@ -121,7 +121,7 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
 </head>
 <body>
 <div class="wrap">
- 
+
   <div class="header">
     <div class="header-left">
       <img src="logo.svg" alt="era92" onerror="this.style.display='none'">
@@ -135,14 +135,14 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
       <button class="btn" id="btnRefresh" onclick="refresh()">Refresh</button>
     </div>
   </div>
- 
+
   <div class="tabs">
     <button class="tab active" data-tab="overview" onclick="switchTab('overview',this)">Overview</button>
     <button class="tab" data-tab="finance" onclick="switchTab('finance',this)">era92 Finance</button>
     <button class="tab" data-tab="ventures" onclick="switchTab('ventures',this)">era92 Ventures</button>
     <button class="tab" data-tab="portfolio" onclick="switchTab('portfolio',this)">Loan Portfolio</button>
   </div>
- 
+
   <div class="panel active" id="tab-overview">
     <div class="kpis" id="kpiOverview"></div>
     <div class="grid-2">
@@ -154,7 +154,7 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
       <div class="card"><h3>Consolidated summary</h3><div class="cap">Corrected for variances against the Group Income Statement</div><div id="tblSummary"></div></div>
     </div>
   </div>
- 
+
   <div class="panel" id="tab-finance">
     <div class="kpis" id="kpiFinance"></div>
     <div class="banner info">
@@ -172,7 +172,7 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
       <div id="tblInterest"></div>
     </div>
   </div>
- 
+
   <div class="panel" id="tab-ventures">
     <div class="kpis" id="kpiVentures"></div>
     <div class="section-title">Operating units — H1 2026 revenue</div>
@@ -183,7 +183,7 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
     </div>
     <div class="card"><h3>Monthly profit &amp; loss — trading ventures</h3><div class="cap">Excludes era92 Hub: its direct costs are pooled at group level and cannot be isolated</div><div id="tblVentures"></div></div>
   </div>
- 
+
   <div class="panel" id="tab-portfolio">
     <div class="kpis" id="kpiPortfolio"></div>
     <div class="banner info">
@@ -203,7 +203,7 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
       <div class="card"><h3>Recovery &amp; disposal book</h3><div class="cap">Arrears and past-maturity exposure</div><div id="tblRecovery"></div></div>
     </div>
   </div>
- 
+
   <div class="foot">
     <div><strong>era92 Fund</strong> — Democratising Access to Capital · <a href="https://era92fund.com" target="_blank" rel="noopener noreferrer">era92fund.com</a></div>
     <div style="margin-top:6px" id="footNote"></div>
@@ -211,7 +211,7 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
     <div style="margin-top:6px">Prepared for Angelo Development Foundation · Unaudited management accounts · Confidential</div>
   </div>
 </div>
- 
+
 <script>
 /* ============================================================
    CONFIGURATION
@@ -221,14 +221,26 @@ td.note-cell{text-align:left;color:var(--text-muted);font-size:11px;padding-top:
    RESTRICTED. Never point this at the master.
    ============================================================ */
 const SHEET_ID = '1LXXDMjECMonrHh_Gd0BraVphoGyyJILHSgexZKEJLZc';
+
+/* Primary source. Requires: Share -> General access -> Anyone with the link -> VIEWER.
+   If the sheet is private, Google serves a sign-in page and we fall back below. */
 const FEED_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
- 
+
+/* Fallback source. Some browsers block the gviz endpoint cross-origin (CORS).
+   If that happens: File -> Share -> Publish to web -> select the sheet -> CSV,
+   then paste the generated .../pub?output=csv URL here. It is CORS-enabled.
+   Leave '' if the primary works. */
+const PUB_URL = '';
+
+/* Auto-refresh cadence, minutes. Set to 0 to disable. */
+const REFRESH_MINUTES = 10;
+
 const C = {
   teal:'#0092b4', tealDk:'#006981', tealLt:'#c7e1eb',
   orange:'#fc5e27', orangeLt:'#ffa255',
   slate:'#747a96', red:'#ff4151'
 };
- 
+
 /* Embedded fallback — mirrors the feed sheet exactly. Used until the
    live fetch succeeds, and retained if it fails. */
 const FALLBACK = `section,label,v1,v2,v3,v4,v5,v6,v7,v8
@@ -292,7 +304,7 @@ INTEREST,H1 2026,532841076,,,,,,
 INTEREST,H2 2026,232463337,,,,,,
 INTEREST,FY2026,765304413,,,,,,
 INTEREST,2027 tail,25298640,,,,,,`;
- 
+
 /* ---------- CSV parsing (RFC4180-ish: handles quoted fields) ---------- */
 function parseCSV(text){
   const rows=[]; let row=[], field='', q=false;
@@ -312,7 +324,7 @@ function parseCSV(text){
   return rows.filter(r=>r.some(x=>x!==''));
 }
 const num = v => { const n=parseFloat(String(v).replace(/[^0-9.\-]/g,'')); return isNaN(n)?0:n; };
- 
+
 function parseFeed(text){
   const rows=parseCSV(text);
   if(!rows.length) throw new Error('empty feed');
@@ -340,10 +352,10 @@ function parseFeed(text){
   if(!D.kpi.numLoans)  throw new Error('feed has no KPI rows');
   return D;
 }
- 
+
 let DATA = parseFeed(FALLBACK);
 let LIVE = false;
- 
+
 /* ---------- currency: USD is the reporting unit, UGX the source ---------- */
 const rate  = () => DATA.kpi.usdRate || num(DATA.meta.usdRate) || 3613;
 const toUsd = n => n/rate();
@@ -354,36 +366,61 @@ const ugx   = n => 'UGX '+fmt(n);                           // secondary
 const ugxM  = n => 'UGX '+(n/1e6).toFixed(1)+'M';           // secondary, compact
 const fmtPct= (n,d=1) => (n*100).toFixed(d)+'%';
 const both  = n => usd(n)+' <span style="color:var(--text-muted)">· '+ugxM(n)+'</span>';
- 
+
 /* ---------- status + fetch ---------- */
 function setStatus(state,text){
   document.getElementById('statusDot').className='dot '+state;
   document.getElementById('statusText').textContent=text;
 }
- 
+
+async function tryFeed(url){
+  let res;
+  try{
+    res = await fetch(url+(url.includes('?')?'&':'?')+'_='+Date.now(),{cache:'no-store'});
+  }catch(netErr){
+    // fetch() throws TypeError for CORS rejections and offline — they are indistinguishable here
+    const e=new Error('blocked by the browser (CORS) or offline'); e.kind='cors'; throw e;
+  }
+  if(!res.ok){ const e=new Error('HTTP '+res.status); e.kind='http'; throw e; }
+  const txt=await res.text();
+  if(/^\s*</.test(txt)){
+    const e=new Error('sheet is not shared — Google returned a sign-in page'); e.kind='private'; throw e;
+  }
+  return parseFeed(txt);
+}
+
+let lastFetch=0;
+
 async function refresh(){
   const btn=document.getElementById('btnRefresh');
   btn.disabled=true; setStatus('loading','Fetching…');
-  try{
-    const res=await fetch(FEED_URL+'&_='+Date.now(),{cache:'no-store'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const txt=await res.text();
-    if(/^\s*</.test(txt)) throw new Error('feed sheet is not link-readable (got HTML, not CSV)');
-    DATA=parseFeed(txt); LIVE=true;
-    setStatus('live','Live · '+new Date().toLocaleTimeString());
-    document.getElementById('footNote').textContent =
-      'Read live from the era92 Fund aggregate feed. No borrower-level data is published.';
-    renderAll();
-  }catch(e){
-    console.warn('Live feed unavailable:',e);
-    LIVE=false;
-    setStatus('snapshot','Embedded snapshot');
-    document.getElementById('footNote').innerHTML =
-      '<span style="color:var(--warn)">Live feed unavailable ('+e.message+'). Showing the embedded snapshot — '+
-      'figures remain correct as at the report date but are not refreshing.</span>';
-  }finally{ btn.disabled=false; }
+  const sources=[['gviz',FEED_URL]];
+  if(PUB_URL) sources.push(['published CSV',PUB_URL]);
+  let err;
+  for(const [name,url] of sources){
+    try{
+      DATA=await tryFeed(url); LIVE=true; lastFetch=Date.now();
+      setStatus('live','Live · '+new Date().toLocaleTimeString());
+      document.getElementById('footNote').textContent =
+        'Read live from the era92 Fund aggregate feed'+(name==='published CSV'?' (published CSV)':'')+
+        '. No borrower-level data is published.';
+      renderAll(); btn.disabled=false; return;
+    }catch(e){ err=e; console.warn('Feed source "'+name+'" failed:',e.message); }
+  }
+  // every source failed — say plainly what to do about it
+  LIVE=false;
+  setStatus('snapshot','Embedded snapshot');
+  const fix = err && err.kind==='private'
+      ? 'Fix: open the feed sheet, Share &rarr; General access &rarr; Anyone with the link &rarr; Viewer.'
+    : err && err.kind==='cors'
+      ? 'Fix: File &rarr; Share &rarr; Publish to web &rarr; CSV, then set PUB_URL in this file to the generated URL.'
+      : 'Check the feed sheet ID and its sharing settings.';
+  document.getElementById('footNote').innerHTML =
+    '<span style="color:var(--warn)">Live feed unavailable — '+(err?err.message:'unknown error')+'. '+
+    'Showing the embedded snapshot: figures are correct as at the report date but are not refreshing. '+fix+'</span>';
+  btn.disabled=false;
 }
- 
+
 /* ---------- tabs ---------- */
 function switchTab(name,el){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -392,7 +429,7 @@ function switchTab(name,el){
   (el||document.querySelector('.tab[data-tab="'+name+'"]')).classList.add('active');
   renderAll();
 }
- 
+
 /* ---------- chart helpers (all series plotted in USD) ---------- */
 const charts={};
 function mk(id,cfg){
@@ -418,7 +455,7 @@ const stackOpts={...baseOpts,scales:{x:{stacked:true,grid:{display:false},ticks:
 const donutOpts={responsive:true,maintainAspectRatio:false,cutout:'56%',
   plugins:{legend:{...LEGEND,position:'bottom'},
     tooltip:{callbacks:{label:c=>c.label+': $'+fmt(c.parsed)+'  (UGX '+fmt(c.parsed*rate())+')'}}}};
- 
+
 function kpiCard(label,valUsd,altUgx,note,noteClass,accent,small){
   return '<div class="kpi '+(accent?'accent':'')+'">'+
     '<div class="label">'+label+'</div>'+
@@ -426,7 +463,7 @@ function kpiCard(label,valUsd,altUgx,note,noteClass,accent,small){
     '<div class="alt">'+(altUgx||'')+'</div>'+
     '<div class="note '+(noteClass||'')+'">'+(note||'')+'</div></div>';
 }
- 
+
 /* ---------- renderers ---------- */
 function renderOverview(){
   const k=DATA.kpi, m=DATA.months;
@@ -436,22 +473,22 @@ function renderOverview(){
     kpiCard('Loan book outstanding',usd(k.totalOutstanding),ugxM(k.totalOutstanding),k.numLoans+' accounts at 31 May 26','',false,true)+
     kpiCard('Repayment rate',fmtPct(k.repaymentRate,2),'of amounts due','FY25 audited: 96.5%','up',false,true)+
     kpiCard('PAR &gt; 30 days',fmtPct(k.par30,2),'of outstanding','one loan · nothing past 60 days','up',false,true);
- 
+
   mk('cMonthly',{type:'bar',data:{labels:m.map(x=>x.m),datasets:[
     {label:'92 Cafe',data:m.map(x=>toUsd(x.cafe)),backgroundColor:C.orange},
     {label:'Car Wash',data:m.map(x=>toUsd(x.wash)),backgroundColor:C.orangeLt},
     {label:'92 Active',data:m.map(x=>toUsd(x.active)),backgroundColor:C.tealLt},
     {label:'era92 Hub',data:m.map(x=>toUsd(x.hub)),backgroundColor:C.teal}]},options:stackOpts});
- 
+
   mk('cComposition',{type:'doughnut',data:{labels:['Ventures income','Finance — interest (reported)'],
     datasets:[{data:[toUsd(k.venturesIncomeTotal),toUsd(k.interestH1)],
       backgroundColor:[C.teal,C.orange],borderColor:'#1f2027',borderWidth:3}]},options:donutOpts});
- 
+
   mk('cPL',{type:'bar',data:{labels:m.map(x=>x.m),datasets:[
     {label:'Trading income',data:m.map(x=>toUsd(x.trading)),backgroundColor:C.teal},
     {label:'COGS',data:m.map(x=>toUsd(x.cogs)),backgroundColor:C.slate},
     {label:'Net income',data:m.map(x=>toUsd(x.net)),backgroundColor:C.orange}]},options:baseOpts});
- 
+
   const row=(l,n,cls)=>'<tr'+(cls?' class="'+cls+'"':'')+'><td>'+l+'</td><td class="usd">'+usd(n)+'</td><td class="ugx">'+fmt(n)+'</td></tr>';
   document.getElementById('tblSummary').innerHTML='<table>'+
     '<tr><th>Line</th><th>USD</th><th>UGX</th></tr>'+
@@ -466,7 +503,7 @@ function renderOverview(){
       ' of ventures income, but its direct costs sit inside pooled group expense lines and cannot be isolated — '+
       'so the net income line above covers trading units only, and Hub is not comparable to it.</td></tr></table>';
 }
- 
+
 function renderFinance(){
   const k=DATA.kpi;
   document.getElementById('kpiFinance').innerHTML=
@@ -475,13 +512,13 @@ function renderFinance(){
     kpiCard('FY2025 audited',usd(k.interestFY2025Audited),ugxM(k.interestFY2025Audited),'era92 Finance interest income','',false,true)+
     kpiCard('Contracted interest',usd(k.interestContracted),ugxM(k.interestContracted),'lifetime value of current book','',false,true)+
     kpiCard('Outstanding book',usd(k.totalOutstanding),ugxM(k.totalOutstanding),k.numLoans+' live accounts','',false,true);
- 
+
   const ip=DATA.interest.filter(x=>x.p!=='FY2026');
   mk('cInterestPeriod',{type:'bar',data:{labels:ip.map(x=>x.p),
     datasets:[{label:'Interest',data:ip.map(x=>toUsd(x.v)),
       backgroundColor:ip.map(x=>x.p==='H1 2026'?C.teal:(x.p==='H2 2026'?C.orangeLt:C.slate)),borderRadius:4}]},
     options:{...baseOpts,plugins:{legend:{display:false},tooltip:TIP}}});
- 
+
   document.getElementById('tblInterest').innerHTML='<table>'+
     '<tr><th>Period</th><th>USD</th><th>UGX</th></tr>'+
     DATA.interest.map(x=>'<tr><td>'+x.p+'</td><td class="usd">'+usd(x.v)+'</td><td class="ugx">'+fmt(x.v)+'</td></tr>').join('')+
@@ -493,7 +530,7 @@ function renderFinance(){
       'a year — strong for liquidity and duration risk, but it means interest has to be re-earned through new origination '+
       'rather than carried by the existing book. The investment case rests on pipeline, not on the book as it stands.</td></tr></table>';
 }
- 
+
 function renderVentures(){
   const k=DATA.kpi, m=DATA.months;
   document.getElementById('kpiVentures').innerHTML=
@@ -501,7 +538,7 @@ function renderVentures(){
     kpiCard('Gross profit',usd(k.venturesGrossProfit),ugxM(k.venturesGrossProfit),'trading units','',false,true)+
     kpiCard('Operating expenses',usd(k.venturesOpEx),ugxM(k.venturesOpEx),'trading units','',false,true)+
     kpiCard('Net income',usd(k.venturesNetTrading),ugxM(k.venturesNetTrading),fmtPct(k.venturesNetMargin)+' margin','up',true,true);
- 
+
   const units=[
     {n:'92 Cafe',              v:m.reduce((s,x)=>s+x.cafe,0),   c:C.orange,   o:true},
     {n:'Car Wash & Detailing', v:m.reduce((s,x)=>s+x.wash,0),   c:C.orangeLt, o:true},
@@ -512,17 +549,17 @@ function renderVentures(){
     '<div class="v">'+usd(u.v)+'</div>'+
     '<div class="a">'+ugxM(u.v)+'</div>'+
     '<div class="s">'+fmtPct(u.v/k.venturesIncomeTotal)+' of ventures income</div></div>').join('');
- 
+
   mk('cVenturesBar',{type:'bar',data:{labels:m.map(x=>x.m),datasets:[
     {label:'92 Cafe',data:m.map(x=>toUsd(x.cafe)),backgroundColor:C.orange},
     {label:'Car Wash',data:m.map(x=>toUsd(x.wash)),backgroundColor:C.orangeLt},
     {label:'92 Active',data:m.map(x=>toUsd(x.active)),backgroundColor:C.tealLt},
     {label:'era92 Hub',data:m.map(x=>toUsd(x.hub)),backgroundColor:C.teal}]},options:stackOpts});
- 
+
   mk('cVenturesPie',{type:'doughnut',data:{labels:units.map(u=>u.n),
     datasets:[{data:units.map(u=>toUsd(u.v)),backgroundColor:units.map(u=>u.c),borderColor:'#1f2027',borderWidth:3}]},
     options:donutOpts});
- 
+
   document.getElementById('tblVentures').innerHTML='<table>'+
     '<tr><th>Month</th><th>Trading income</th><th>COGS</th><th>Gross profit</th><th>Net income</th><th>UGX net</th><th>Margin</th></tr>'+
     m.map(x=>'<tr><td>'+x.m+'</td><td class="usd">'+usd(x.trading)+'</td><td class="usd">'+usd(x.cogs)+'</td><td class="usd">'+
@@ -532,7 +569,7 @@ function renderVentures(){
     '<tr><td colspan="7" class="note-cell">92 Active contributes '+usd(units[2].v)+' in H1 and grows every month, '+
       'but is absent from the Group Income Statement entirely — the single largest reporting variance identified.</td></tr></table>';
 }
- 
+
 function renderPortfolio(){
   const k=DATA.kpi;
   document.getElementById('kpiPortfolio').innerHTML=
@@ -541,26 +578,26 @@ function renderPortfolio(){
     kpiCard('Repayment rate',fmtPct(k.repaymentRate,2),'of '+usd(k.dueToDate)+' due to date','FY25 audited: 96.5%','up',true,true)+
     kpiCard('PAR &gt; 0 days',fmtPct(k.par0,2),usd(k.overdue)+' overdue','benchmark: <5% healthy','',false,true)+
     kpiCard('Expected credit loss',usd(k.expectedCreditLoss),ugxM(k.expectedCreditLoss),fmtPct(k.expectedCreditLoss/k.totalOutstanding,2)+' of book','up',false,true);
- 
+
   const co=DATA.cohorts;
   mk('cCohort',{type:'bar',data:{labels:co.map(x=>x.c),datasets:[
     {label:'Principal disbursed',data:co.map(x=>toUsd(x.principal)),backgroundColor:C.teal},
     {label:'Collected',data:co.map(x=>toUsd(x.collected)),backgroundColor:C.orange},
     {label:'Outstanding',data:co.map(x=>toUsd(x.outstanding)),backgroundColor:C.slate}]},options:baseOpts});
- 
+
   mk('cStatus',{type:'doughnut',data:{labels:DATA.status.map(x=>x.s),
     datasets:[{data:DATA.status.map(x=>toUsd(x.outstanding)),
       backgroundColor:[C.teal,C.orangeLt,C.orange,C.red],borderColor:'#1f2027',borderWidth:3}]},options:donutOpts});
- 
+
   mk('cProduct',{type:'bar',data:{labels:DATA.products.map(x=>x.p),datasets:[
     {label:'Collected',data:DATA.products.map(x=>toUsd(x.collected)),backgroundColor:C.teal},
     {label:'Outstanding',data:DATA.products.map(x=>toUsd(x.outstanding)),backgroundColor:C.orange}]},options:stackOpts});
- 
+
   mk('cAgeing',{type:'bar',data:{labels:DATA.ageing.map(x=>x.b),
     datasets:[{label:'Overdue',data:DATA.ageing.map(x=>toUsd(x.overdue)),
       backgroundColor:[C.orangeLt,C.orange,C.red,C.red],borderRadius:4}]},
     options:{...baseOpts,plugins:{legend:{display:false},tooltip:TIP}}});
- 
+
   document.getElementById('tblCohort').innerHTML='<table>'+
     '<tr><th>Cohort</th><th>Loans</th><th>Principal</th><th>Collected</th><th>Outstanding</th><th>Collected %</th></tr>'+
     co.map(x=>{const cls=x.pct>0.6?'ok':(x.pct>0.3?'mid':'bad');
@@ -571,7 +608,7 @@ function renderPortfolio(){
     '<tr><td colspan="6" class="note-cell">Collected % declines across cohorts because later loans are younger, not because they '+
       'perform worse — the May cohort has barely reached its first instalment date. Measured against amounts actually due, every '+
       'cohort performs in line with the '+fmtPct(k.repaymentRate,2)+' portfolio average.</td></tr></table>';
- 
+
   const rr=(l,n,note,cls)=>'<tr'+(cls?' class="'+cls+'"':'')+'><td>'+l+'</td><td class="usd">'+usd(n)+
     '</td><td class="ugx">'+fmt(n)+'</td><td style="text-align:left;color:var(--text-secondary)">'+note+'</td></tr>';
   document.getElementById('tblRecovery').innerHTML='<table>'+
@@ -586,7 +623,7 @@ function renderPortfolio(){
       'The '+usd(30000000)+' “gain on disposal of assets” in the Group Income Statement is a group-level asset disposal, not a loan '+
       'recovery, and should not be read as recovery income for the Fund.</td></tr></table>';
 }
- 
+
 function renderAll(){
   const active=document.querySelector('.panel.active').id.replace('tab-','');
   if(active==='overview')  renderOverview();
@@ -598,12 +635,20 @@ function renderAll(){
     ' · Loan book at '+(DATA.meta.loanValuationDate||'31 May 2026')+
     ' · US$ at UGX '+fmt(rate())+' = $1';
 }
- 
+
 /* ---------- init ---------- */
 renderAll();
 setStatus('snapshot','Embedded snapshot');
 refresh();
+
+/* Keep it current: poll on a cadence, and catch up when the tab regains focus
+   (a dashboard left open on a wall screen or a background tab still updates). */
+if(REFRESH_MINUTES>0){
+  setInterval(()=>{ if(!document.hidden) refresh(); }, REFRESH_MINUTES*60*1000);
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden && Date.now()-lastFetch > REFRESH_MINUTES*60*1000) refresh();
+  });
+}
 </script>
 </body>
 </html>
- 
